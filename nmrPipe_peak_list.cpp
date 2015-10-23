@@ -13,46 +13,46 @@ void process(const string &fname);
 
 int main()
 {
-	cout << "Extract peak heights from nmrPipe generated peak list. " << endl;
-	cout << "Enter filename ('q' to quit): " << endl;
+  cout << "Extract peak heights from nmrPipe generated peak list. " << endl;
+  cout << "Enter filename ('q' to quit): " << endl;
 
   string filename;	
-	while(cin >> filename && filename != "q"){
-		process(filename);
-	}	
+  while(cin >> filename && filename != "q"){
+    process(filename);
+  }	
 
-	return 0;
+  return 0;
 }
 
 vector<string> get_peaks(const string &fname)
 {
-	ifstream filein(fname);
-	string line;
-	vector<string> lines;
+  ifstream filein(fname);
+  string line;
+  vector<string> lines;
 
-	// skip the first 19 lines that do not contain peaks.
-	for(int i=0; i!=19; ++i)
-		getline(filein,line);
+  // skip the first 19 lines that do not contain peaks.
+  for(int i=0; i!=19; ++i)
+    getline(filein,line);
 
-	while(getline(filein,line)){
+  while(getline(filein,line)){
     lines.push_back(line);
-	}
+  }
   filein.close();
-	return lines;
+  return lines;
 }
 
 void process(const string &fname)
 {
   vector<string> peaks;
-	peaks = get_peaks(fname);
-	string outfile = fname + ".out";
-	ofstream ofile(outfile);
-	for(auto peak : peaks) {
-	  vector<string> peak_elems;
+  peaks = get_peaks(fname);
+  string outfile = fname + ".out";
+  ofstream ofile(outfile);
+  for(auto peak : peaks) {
+    vector<string> peak_elems;
     istringstream peak_stream(peak);
     copy(istream_iterator<string>(peak_stream),
-				 istream_iterator<string>(),
-				 back_inserter(peak_elems));
+         istream_iterator<string>(),
+         back_inserter(peak_elems));
 		vector<string> peak_concised;
 		peak_concised.push_back(peak_elems[5]);	// 6th ppm
 		peak_concised.push_back(peak_elems[6]); // 7th ppm
